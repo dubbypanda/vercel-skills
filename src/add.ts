@@ -1288,7 +1288,10 @@ export async function runAdd(args: string[], options: AddOptions = {}): Promise<
       const totalAgents = Object.keys(agents).length;
       spinner.stop(`${totalAgents} agents`);
 
-      if (installedAgents.length === 0) {
+      if (installedAgents.includes('eve')) {
+        targetAgents = ['eve'];
+        p.log.info(`Installing to: ${pc.cyan(agents.eve.displayName)}`);
+      } else if (installedAgents.length === 0) {
         if (options.yes) {
           targetAgents = validAgents as AgentType[];
           p.log.info('Installing to all agents');
@@ -1444,7 +1447,10 @@ export async function runAdd(args: string[], options: AddOptions = {}): Promise<
       for (const skill of skills) {
         if (summaryLines.length > 0) summaryLines.push('');
 
-        const canonicalPath = getCanonicalPath(skill.name, { global: installGlobally });
+        const canonicalPath =
+          targetAgents.length === 1
+            ? getCanonicalPath(skill.name, { global: installGlobally, agent: targetAgents[0] })
+            : getCanonicalPath(skill.name, { global: installGlobally });
         const shortCanonical = shortenPath(canonicalPath, cwd);
         summaryLines.push(`${pc.cyan(shortCanonical)}`);
         summaryLines.push(...buildAgentSummaryLines(targetAgents, installMode));
