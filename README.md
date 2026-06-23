@@ -139,6 +139,9 @@ npx skills find
 
 # Search by keyword
 npx skills find typescript
+
+# Search across every repository owned by an organization or user
+npx skills find react --owner vercel
 ```
 
 ### `skills update`

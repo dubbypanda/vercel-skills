@@ -116,6 +116,9 @@ ${BOLD}Manage Skills:${RESET}
   list, ls             List installed skills
   find [query]         Search for skills interactively
 
+${BOLD}Find Options:${RESET}
+  --owner <owner>        Search only repositories from a GitHub owner
+
 ${BOLD}Updates:${RESET}
   update [skills...]   Update skills to latest versions (alias: upgrade)
 
@@ -183,6 +186,7 @@ ${BOLD}Examples:${RESET}
   ${DIM}$${RESET} skills ls --json                      ${DIM}# JSON output${RESET}
   ${DIM}$${RESET} skills find                          ${DIM}# interactive search${RESET}
   ${DIM}$${RESET} skills find typescript               ${DIM}# search by keyword${RESET}
+  ${DIM}$${RESET} skills find react --owner vercel     ${DIM}# search within an owner${RESET}
   ${DIM}$${RESET} skills update
   ${DIM}$${RESET} skills update my-skill             ${DIM}# update a single skill${RESET}
   ${DIM}$${RESET} skills update -g                    ${DIM}# update global skills only${RESET}
