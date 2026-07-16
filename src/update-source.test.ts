@@ -128,6 +128,14 @@ describe('update-source', () => {
       expect(result).toBe('git@gitea.example.com:owner/repo.git#main');
     });
 
+    it('does not append skill folder for ssh:// sources without a .git suffix', () => {
+      const result = buildLocalUpdateSource({
+        source: 'ssh://git@gitea.example.com/owner/repo',
+        skillPath: 'skills/my-skill/SKILL.md',
+      });
+      expect(result).toBe('ssh://git@gitea.example.com/owner/repo');
+    });
+
     it('does not append skill folder for self-hosted HTTPS .git URLs', () => {
       const result = buildLocalUpdateSource({
         source: 'https://gitea.example.com/owner/repo.git',
@@ -179,6 +187,16 @@ describe('update-source', () => {
       expect(
         shouldUseFullDepthForUpdate({
           source: 'git@gitea.example.com:owner/repo.git',
+          sourceType: 'git',
+          skillPath: 'plugins/example/skills/deep-skill/SKILL.md',
+        })
+      ).toBe(true);
+    });
+
+    it('returns true for ssh:// sources without a .git suffix', () => {
+      expect(
+        shouldUseFullDepthForUpdate({
+          source: 'ssh://git@gitea.example.com/owner/repo',
           sourceType: 'git',
           skillPath: 'plugins/example/skills/deep-skill/SKILL.md',
         })

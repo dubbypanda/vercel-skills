@@ -457,8 +457,8 @@ describe('Update Cleanup Unit Tests', () => {
         version: 3,
         skills: {
           'skill-a': {
-            source: 'git@github.com:owner/repo.git',
-            sourceUrl: 'git@github.com:owner/repo.git',
+            source: 'ssh://git@github.com/owner/repo',
+            sourceUrl: 'ssh://git@github.com/owner/repo',
             skillPath: 'plugins/example/skills/skill-a/SKILL.md',
             sourceType: 'git',
             skillFolderHash: 'old-hash',
@@ -481,7 +481,7 @@ describe('Update Cleanup Unit Tests', () => {
 
       await updateGlobalSkills({ yes: true });
 
-      expect(git.cloneRepo).toHaveBeenCalledWith('git@github.com:owner/repo.git', undefined);
+      expect(git.cloneRepo).toHaveBeenCalledWith('ssh://git@github.com/owner/repo', undefined);
       expect(localLock.computeSkillFolderHash).toHaveBeenCalledWith(
         join('/tmp/repo', 'plugins/example/skills/skill-a')
       );
@@ -490,6 +490,8 @@ describe('Update Cleanup Unit Tests', () => {
         .mock.calls.find((call) => Array.isArray(call[1]) && call[1].includes('add'));
       expect(installCall).toBeDefined();
       const [, argv] = installCall!;
+      expect(argv).toContain('ssh://git@github.com/owner/repo');
+      expect(argv).not.toContain('ssh://git@github.com/owner/repo/plugins/example/skills/skill-a');
       expect(argv).toContain('--full-depth');
     });
 
